@@ -1,0 +1,16 @@
+{
+    "defaultModel": "Default Model",
+    "displayLanguage": "Display Language",
+    "responseLanguage": "Response Language",
+    "systemPrompt": "System Prompt",
+    "enterSystemPrompt": "Enter system prompt",
+    "aiConfig": "AI Config",
+    "temperature": "Temperature",
+    "presencePenalty": "Presence Penalty",
+    "frequencyPenalty": "Frequency Penalty",
+    "topP": "Top P",
+    "topK": "Top K",
+    "maxTokens": "Max Tokens",
+    "safetySettings": "Safety Settings(Gemini Only)",
+    "promptCaching": "Prompt Caching(Claude Only)"
+}

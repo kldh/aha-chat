@@ -2,12 +2,12 @@ export enum Provider {
     OpenAI = 'openai',
     Azure = 'azure',
     Anthropic = 'anthropic',
-    Bedrock = 'bedrock',
+    // Bedrock = 'bedrock',
     Google = 'google',
-    Vertex = 'vertex',
-    Mistral = 'mistral',
+    // Vertex = 'vertex',
+    // Mistral = 'mistral',
     Groq = 'groq',
-    Perplexity = 'perplexity',
-    Fireworks = 'fireworks',
+    // Perplexity = 'perplexity',
+    // Fireworks = 'fireworks',
     Cohere = 'cohere'
   }

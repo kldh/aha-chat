@@ -6,11 +6,11 @@ import { X } from 'lucide-react';
 import { Provider } from '@/constants/provider';
 import { useSettingsStore } from '@/stores/settingsStore';
 
-interface ProviderSettingsProps {
+interface ProviderConfigProps {
   provider: Provider;
 }
 
-const ProviderSettings: React.FC<ProviderSettingsProps> = ({ provider }) => {
+const ProviderConfig: React.FC<ProviderConfigProps> = ({ provider }) => {
   const { providers, setProviderConfig } = useSettingsStore();
   const [newModel, setNewModel] = useState<string>('');
 
@@ -87,4 +87,4 @@ const ProviderSettings: React.FC<ProviderSettingsProps> = ({ provider }) => {
   );
 };
 
-export default ProviderSettings;
+export default ProviderConfig;

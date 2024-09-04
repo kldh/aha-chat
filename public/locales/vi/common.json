@@ -1,0 +1,9 @@
+{
+    "defaultModel": "Mô hình mặc định",
+    "displayLanguage": "Ngôn ngữ hiển thị",
+    "responseLanguage": "Ngôn ngữ phản hồi",
+    "systemPrompt": "Gợi ý hệ thống",
+    "enterSystemPrompt": "Nhập gợi ý hệ thống",
+    "temperature": "Nhiệt độ",
+    "presencePenalty": "Hình phạt hiện diện"
+}

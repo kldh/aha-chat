@@ -5,21 +5,23 @@ import InputComponent from '@/components/InputComponent';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import useAIChat from '@/hooks/useAIChat';
 import { Provider } from '@/constants/provider';
-import { Settings, X } from 'lucide-react';
-import SettingsPage from '@/pages/SettingsPage';
+import { Settings, } from 'lucide-react';
 import { GlobalDrawer } from '@/components/GlobalDrawer';
-import ProviderSettings from '@/components/ProviderSettings';
-import { useSettingsStore } from '@/stores/settingsStore';
+import ProviderConfig from '@/container/setting/ProviderConfig';
+import { modelConfig, useSettingsStore } from '@/stores/settingsStore';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { SettingsUI } from '@/container/setting/SettingsUI';
+import { toast } from 'sonner';
+import { SelectCurrentModel } from './setting/SelectCurrentModel';
 
 const ChatUI: React.FC = () => {
-  const allModels = useSettingsStore.getState().getModels();
-
-  const { messages, provider, apiKey, sendMessage, changeModel } = useAIChat();
+  
+  const { messages, provider, apiKey, sendMessage } = useAIChat();
 
   const handleOpenSettings = () => {
     GlobalDrawer.open({
       title: 'Cài đặt',
-      children: <SettingsPage />
+      children: <SettingsUI />
     });
   };
 
@@ -27,17 +29,14 @@ const ChatUI: React.FC = () => {
     if (!apiKey) {
       GlobalDrawer.open({
         title: 'Cài đặt',
-        children: <ProviderSettings provider={provider} />
+        children: <div className="p-4"><ProviderConfig provider={provider} /></div>
       });
       return;
     }
     sendMessage(message);
   };
-  const handleModelChange = (idx: string) => {
-    const a = allModels[Number(idx)];
-    console.log(a)
-    changeModel(a);
-  };
+  
+  
 
   return (
     <>
@@ -45,23 +44,15 @@ const ChatUI: React.FC = () => {
         <div className="flex-1">
           <div className="w-full flex justify-between space-x-2 items-center pb-3">
             <div className="flex flex-1">
-              <Select onValueChange={handleModelChange} defaultValue={"0"}>
-                <SelectTrigger className="h-8">
-                  <SelectValue placeholder="Chọn nhà cung cấp" />
-                </SelectTrigger>
-                <SelectContent>
-                  {allModels.map((item: { model: string, provider: Provider }, idx: number) => (
-                    <SelectItem key={idx} value={idx.toString()}>
-                      {`${item.model}(${item.provider})`}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
+            <SelectCurrentModel />
             </div>
-            <Button variant="ghost" onClick={handleOpenSettings}>
-              <Settings className="w-5 h-5" />
-            </Button>
+            <div className="flex justify-end items-center space-x-2">
+              <Button variant="ghost" onClick={handleOpenSettings}>
+                <Settings className="w-5 h-5" />
+              </Button>
+              <LanguageSwitcher />
+            </div>
+
           </div>
           <div>
             <MessageList messages={messages} />

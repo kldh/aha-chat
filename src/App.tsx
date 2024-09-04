@@ -1,4 +1,4 @@
-import ChatUI from './pages/ChatUI';
+import ChatUI from './container/ChatUI';
 import { Toaster } from "@/components/ui/sonner"
 import { GlobalDrawerProvider } from '@/components/GlobalDrawer';
 

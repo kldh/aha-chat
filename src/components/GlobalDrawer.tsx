@@ -44,14 +44,14 @@ export const GlobalDrawerProvider: React.FC = () => {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerContent className="max-h-[calc(100vh-20px)] max-w-2xl mx-auto">
+      <DrawerContent className="h-[calc(100vh-20px)] max-w-2xl mx-auto">
         <VisuallyHidden.Root>
           <DialogTitle>{drawerContent?.title || "Tiêu đề"}</DialogTitle>
           <DialogDescription>{drawerContent?.title || "Tiêu đề"}</DialogDescription>
         </VisuallyHidden.Root>
-        <DrawerClose className="absolute top-4 right-4 bg-background" asChild>
-          <Button variant="outline" className="rounded-full h-fit p-2">
-            <X className="w-4 h-4" strokeWidth={2} />
+        <DrawerClose className="absolute top-3 right-3 bg-gray-200 hover:bg-slate-300 active:scale-95 transition-transform duration-300" asChild>
+          <Button variant="outline" className="rounded-full h-fit p-1">
+            <X className="w-4 h-4 text-gray-500" strokeWidth={3} />
           </Button>
         </DrawerClose>
         <div className="p-4 overflow-y-scroll">

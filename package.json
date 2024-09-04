@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ai-sdk/amazon-bedrock": "^0.0.22",
     "@ai-sdk/google-vertex": "^0.0.35",
     "@anthropic-ai/sdk": "^0.27.1",
     "@aws-sdk/client-bedrock-runtime": "^3.642.0",
@@ -56,6 +57,7 @@
     "express": "^4.19.2",
     "fireworks-js": "^2.10.8",
     "groq-sdk": "^0.7.0",
+    "i18next": "^23.14.0",
     "input-otp": "^1.2.4",
     "langchain": "^0.2.17",
     "lucide-react": "^0.438.0",
@@ -68,6 +70,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
+    "react-i18next": "^15.0.1",
     "react-resizable-panels": "^2.1.2",
     "recharts": "^2.12.7",
     "sonner": "^1.5.0",

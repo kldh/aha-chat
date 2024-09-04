@@ -5,43 +5,35 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Provider } from '@/constants/provider';
 import { useSettingsStore } from '@/stores/settingsStore';
-import ProviderSettings from '@/components/ProviderSettings';
+import ProviderConfig from '@/container/setting/ProviderConfig';
+import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter';
 
-const SettingsPage: React.FC = () => {
-    const { providers, defaultProvider, setDefaultProvider } = useSettingsStore();
-    console.log(providers);
-    
-    const handleSaveDefaultProvider = (provider: Provider) => {
-        setDefaultProvider(provider);
-        alert('Nhà cung cấp mặc định đã được lưu!');
-    };
-
+const ProviderSetting: React.FC = () => {
+    const { providers } = useSettingsStore();
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Cài đặt ứng dụng</h1>
-
+        <div>
             <Accordion type="single" collapsible className="mb-4">
                 {Object.keys(providers).map((provider) => (
                     <AccordionItem key={provider} value={provider}>
-                        <AccordionTrigger>{provider} Cài đặt</AccordionTrigger>
+                        <AccordionTrigger>{capitalizeFirstLetter(provider)}</AccordionTrigger>
                         <AccordionContent>
-                            <ProviderSettings provider={provider as Provider} />
+                            <ProviderConfig provider={provider as Provider} />
                         </AccordionContent>
                     </AccordionItem>
                 ))}
             </Accordion>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <label htmlFor="defaultProvider" className="block mb-2">Nhà cung cấp mặc định:</label>
                 <div className="flex items-center space-x-2">
                     <Select onValueChange={(value) => handleSaveDefaultProvider(value as Provider)} value={defaultProvider}>
@@ -57,9 +49,9 @@ const SettingsPage: React.FC = () => {
                         </SelectContent>
                     </Select>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
 
-export default SettingsPage;
+export default ProviderSetting;

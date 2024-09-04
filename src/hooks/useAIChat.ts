@@ -2,24 +2,27 @@ import { useState } from 'react';
 import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Anthropic } from '@anthropic-ai/sdk';
-import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { Groq } from 'groq-sdk';
 import { CohereClient } from 'cohere-ai';
 import { useSettingsStore } from '@/stores/settingsStore';
-import { Provider } from '@/constants/provider';
 
 interface Message {
     content: string;
     isUser: boolean;
 }
 
+interface Config {
+    model: string;
+    apiKey?: string;
+    provider: string;
+}
+
 const useAIChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
-    const [models, setModel] = useState<string>(''); 
-    const [provider, setProvider] = useState<Provider>(Provider.OpenAI);
+    const { model, provider } = useSettingsStore(state => state.currentModel);
 
-    const setProviderConfig = useSettingsStore.getState().setProviderConfig;
     const apiKey = useSettingsStore(state => state.providers[provider].apiKey);
+
     const sendMessage = async (message: string) => {
         setMessages(prevMessages => [...prevMessages, { content: message, isUser: true }]);
 
@@ -28,129 +31,107 @@ const useAIChat = () => {
         try {
             switch (provider) {
                 case 'openai':
-                    response = await handleOpenAI(message);
+                    response = await handleOpenAI(message, { model, apiKey, provider });
                     break;
                 case 'azure':
-                    response = await handleAzure(message);
+                    response = await handleAzure(message, { model, apiKey, provider });
                     break;
                 case 'anthropic':
-                    response = await handleAnthropic(message);
-                    break;
-                case 'bedrock':
-                    response = await handleBedrock(message);
+                    response = await handleAnthropic(message, { model, apiKey, provider });
                     break;
                 case 'google':
-                    response = await handleGoogle(message);
-                    break;
+                    response = await handleGoogle(message, { model, apiKey, provider });
                     break;
                 case 'groq':
-                    response = await handleGroq(message);
+                    response = await handleGroq(message, { model, apiKey, provider });
                     break;
                 case 'cohere':
-                    response = await handleCohere(message);
+                    response = await handleCohere(message, { model, apiKey, provider });
                     break;
                 default:
                     throw new Error('Nhà cung cấp không được hỗ trợ');
             }
         } catch (error) {
             console.error('Lỗi trong sendMessage:', error);
-            response = 'Xin lỗi, đã xảy ra lỗi khi xử lý tin nhắn của bạn.';
+            response = error instanceof Error ? error.message : 'Đã xảy ra lỗi không xác định';
         }
 
         setMessages(prevMessages => [...prevMessages, { content: response, isUser: false }]);
     };
 
-    const changeModel = (newValue: {model: string, provider: Provider}) => {
-        setModel(newValue.model)
-        setProvider(newValue.provider);
-    };
-
-    const updateApiKey = (newApiKey: string) => {
-        setProviderConfig(provider, { apiKey: newApiKey });
-    };
-
     return {
         messages,
         provider,
+        model,
         apiKey,
-        sendMessage,
-        changeModel,
-        updateApiKey,
+        setMessages,
+        sendMessage, 
     };
 };
 
-async function handleOpenAI(message: string): Promise<string> {
-    const apiKey = useSettingsStore.getState().providers[Provider.OpenAI].apiKey;
-    const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+
+async function handleOpenAI(message: string, config: Config): Promise<string> {
+    const openai = new OpenAI({ apiKey: config.apiKey, dangerouslyAllowBrowser: true });
     const completion = await openai.chat.completions.create({
         messages: [{ role: 'user', content: message }],
-        model: 'gpt-4o',
+        model: config.model || 'gpt-4',
     });
     return completion.choices[0].message.content || '';
 }
 
-async function handleAzure(message: string): Promise<string> {
-    const apiKey = useSettingsStore.getState().providers[Provider.Azure].apiKey;
-    const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+async function handleAzure(message: string, config: Config): Promise<string> {
+    const openai = new OpenAI({ apiKey: config.apiKey, dangerouslyAllowBrowser: true });
     const completion = await openai.chat.completions.create({
         messages: [{ role: 'user', content: message }],
-        model: 'gpt-4o',
+        model: config.model || 'gpt-4',
     });
     return completion.choices[0].message.content || '';
 }
 
-async function handleAnthropic(message: string): Promise<string> {
-    const anthropic = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY,
-    });
+async function handleAnthropic(message: string, config: Config): Promise<string> {
+    const anthropic = new Anthropic({ apiKey: config.apiKey });
     const completion = await anthropic.completions.create({
-        model: 'claude-2',
+        model: config.model || 'claude-2',
         prompt: message,
         max_tokens_to_sample: 300,
     });
     return completion.completion;
 }
 
-async function handleBedrock(message: string): Promise<string> {
-    const client = new BedrockRuntimeClient({ region: 'us-east-1' });
-    const command = new InvokeModelCommand({
-        modelId: 'anthropic.claude-v2',
-        contentType: 'application/json',
-        accept: 'application/json',
-        body: JSON.stringify({
-            prompt: message,
-            max_tokens_to_sample: 300,
-        }),
-    });
-    const response = await client.send(command);
-    const responseBody = JSON.parse(new TextDecoder().decode(response.body));
-    return responseBody.completion;
-}
 
-async function handleGoogle(message: string): Promise<string> {
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-    const result = await model.generateContent(message);
+async function handleGoogle(message: string, config: Config): Promise<string> {
+    if(!config?.apiKey) {
+        throw Error;
+    }
+    const genAI = new GoogleGenerativeAI(config.apiKey);
+    const modelAI = genAI.getGenerativeModel({ model: config.model });
+    const result = await modelAI.generateContent(message);
     const response = await result.response;
     return response.text();
 }
 
-async function handleGroq(message: string): Promise<string> {
-    const groq = new Groq({ apiKey: import.meta.env.VITE_GROQ_API_KEY, dangerouslyAllowBrowser: true });
+async function handleGroq(message: string, config: Config): Promise<string> {
+    if(!config?.apiKey) {
+        throw Error;
+    }
+    const groq = new Groq({ apiKey: config.apiKey, dangerouslyAllowBrowser: true });
     const completion = await groq.chat.completions.create({
         messages: [{ role: 'user', content: message }],
-        model: 'mixtral-8x7b-32768',
+        model: config.model,
     });
     return completion.choices[0].message.content || '';
 }
 
-async function handleCohere(message: string): Promise<string> {
+async function handleCohere(message: string, config: Config): Promise<string> {
+    if(!config?.apiKey) {
+        throw Error;
+    }
     const cohere = new CohereClient({
-        token: process.env.COHERE_API_KEY!,
+        token: config.apiKey!,
     });
     const response = await cohere.generate({
         prompt: message,
-        model: 'command',
+        model: config.model || 'command',
     });
     return response.generations[0].text;
 }
