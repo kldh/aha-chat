@@ -1,11 +1,19 @@
-# React + TypeScript + Vite
+# AI Chat Wrapper with React, TypeScript, and Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project uses Cursor AI to build an AI Chat wrapper, combining modern technologies like React, TypeScript, Vercel AI SDK, Vite, shadcn UI, TailwindCss
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [shadcn UI](https://ui.shadcn.com/) for UI components
+- [Vercel AI SDK](https://vercel.com/blog/introducing-the-vercel-ai-sdk) for AI integration
+
+## Features
+
+- AI Chat wrapper built with Cursor AI
+- Modern and responsive user interface
+- Seamless integration with AI models through Vercel AI SDK
 
 ## Expanding the ESLint configuration
 
@@ -48,3 +56,17 @@ export default tseslint.config({
   },
 })
 ```
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run the app in development mode: `npm run dev`
+
+## Contributing
+
+We welcome contributions to this project. Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
