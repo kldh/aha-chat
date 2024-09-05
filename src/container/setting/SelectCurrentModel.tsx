@@ -3,7 +3,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { toast } from "sonner";
 import { useMemo } from "react";
 
-export const SelectCurrentModel = () => {
+export const SelectCurrentModel = (props: { className?: string}) => {
     const currentModel = useSettingsStore(state => state.currentModel);
     const setCurrentModel = useSettingsStore(state => state.setCurrentModel);
     const getModels = useSettingsStore(state => state.getModels);
@@ -19,8 +19,8 @@ export const SelectCurrentModel = () => {
     }
     const currentModelID = `${currentModel.model}(${currentModel.provider})`;
 
-    return (<Select onValueChange={handleSetCurrentModel} defaultValue={currentModelID}>
-        <SelectTrigger>
+    return (<Select value={currentModelID} onValueChange={handleSetCurrentModel}>
+        <SelectTrigger className={props?.className}>
             <SelectValue />
         </SelectTrigger>
         <SelectContent>
