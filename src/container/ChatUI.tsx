@@ -2,16 +2,12 @@ import React from 'react';
 import { Button } from "@/components/ui/button"
 import MessageList from '@/components/MessageList';
 import InputComponent from '@/components/InputComponent';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import useAIChat from '@/hooks/useAIChat';
-import { Provider } from '@/constants/provider';
 import { Settings, } from 'lucide-react';
 import { GlobalDrawer } from '@/components/GlobalDrawer';
 import ProviderConfig from '@/container/setting/ProviderConfig';
-import { modelConfig, useSettingsStore } from '@/stores/settingsStore';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { SettingsUI } from '@/container/setting/SettingsUI';
-import { toast } from 'sonner';
 import { SelectCurrentModel } from './setting/SelectCurrentModel';
 
 const ChatUI: React.FC = () => {
@@ -21,6 +17,7 @@ const ChatUI: React.FC = () => {
   const handleOpenSettings = () => {
     GlobalDrawer.open({
       title: 'Cài đặt',
+      containerClassName: "h-[calc(100vh-20px)] max-w-2xl",
       children: <SettingsUI />
     });
   };
@@ -29,7 +26,7 @@ const ChatUI: React.FC = () => {
     if (!apiKey) {
       GlobalDrawer.open({
         title: 'Cài đặt',
-        children: <div className="p-4"><ProviderConfig provider={provider} /></div>
+        children: <ProviderConfig provider={provider} />
       });
       return;
     }
@@ -40,11 +37,11 @@ const ChatUI: React.FC = () => {
 
   return (
     <>
-      <div className="w-full max-w-2xl mx-auto min-h-dvh flex flex-col justify-start p-4">
+      <div className="w-full max-w-2xl mx-auto min-h-dvh flex flex-col justify-start">
         <div className="flex-1">
-          <div className="w-full flex justify-between space-x-2 items-center pb-3">
+          <div className="w-full flex justify-between space-x-2 items-center p-4">
             <div className="flex flex-1">
-            <SelectCurrentModel />
+            <SelectCurrentModel className="w-56 p-2" />
             </div>
             <div className="flex justify-end items-center space-x-2">
               <Button variant="ghost" onClick={handleOpenSettings}>
@@ -58,7 +55,7 @@ const ChatUI: React.FC = () => {
             <MessageList messages={messages} />
           </div>
         </div>
-        <div>
+        <div className="mx-auto w-full p-4 pb-3 bg-gray-300 rounded-t-xl">
           <InputComponent onSendMessage={handleSendMessage} />
         </div>
       </div>

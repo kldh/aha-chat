@@ -5,10 +5,12 @@ import { DrawerContent, DrawerClose } from './ui/drawer';
 import { Button } from './ui/button';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+import { cn } from '@/lib/utils';
 
 type DrawerProps = {
   children: React.ReactNode;
   title?: string;
+  containerClassName?: string;
 };
 
 let openDrawerFn: ((props: DrawerProps) => void) | null = null;
@@ -44,7 +46,7 @@ export const GlobalDrawerProvider: React.FC = () => {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerContent className="h-[calc(100vh-20px)] max-w-2xl mx-auto">
+      <DrawerContent className={cn("mx-auto", drawerContent?.containerClassName)}>
         <VisuallyHidden.Root>
           <DialogTitle>{drawerContent?.title || "Tiêu đề"}</DialogTitle>
           <DialogDescription>{drawerContent?.title || "Tiêu đề"}</DialogDescription>
