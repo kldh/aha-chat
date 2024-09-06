@@ -8,7 +8,7 @@ function App() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <ChatUI />
       </div>
-      <Toaster />
+      <Toaster position="top-center" richColors />
       <GlobalDrawerProvider />
     </>
   );

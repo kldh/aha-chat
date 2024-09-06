@@ -20,6 +20,14 @@
     "@ai-sdk/provider-utils" "1.0.17"
     json-schema "0.4.0"
 
+"@ai-sdk/openai@^0.0.55":
+  version "0.0.55"
+  resolved "https://registry.npmjs.org/@ai-sdk/openai/-/openai-0.0.55.tgz"
+  integrity sha512-mYKe5Zqgq+vTtVeyBNLw34TLsWL924q0V6w0x76OgV+tpcyO+MmIc/m6Ego393yRDol2V9BDjmTAfD5jiFv5jw==
+  dependencies:
+    "@ai-sdk/provider" "0.0.22"
+    "@ai-sdk/provider-utils" "1.0.17"
+
 "@ai-sdk/provider-utils@1.0.17":
   version "1.0.17"
   resolved "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-1.0.17.tgz"
